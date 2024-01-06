@@ -9,6 +9,7 @@ namespace Blog.Data.Extensions
     {
         public static IServiceCollection LoadDataLayerExtensions(this IServiceCollection services,IConfiguration config)
         {
+
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             return services;
         }
