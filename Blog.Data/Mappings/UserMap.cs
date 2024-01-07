@@ -55,8 +55,9 @@ namespace Blog.Data.Mappings
                 LastName="Armutcu",
                 PhoneNumberConfirmed=true,
                 EmailConfirmed=true,
-                SecurityStamp=Guid.NewGuid().ToString()
-            };
+                SecurityStamp=Guid.NewGuid().ToString(),
+                ImageId = Guid.Parse("7C8DCD23-143F-4145-AC5D-3D2172E8B876")
+           };
             superadmin.PasswordHash = CreatePasswordHash(superadmin, "123456");
 
             var admin = new AppUser
@@ -71,7 +72,8 @@ namespace Blog.Data.Mappings
                 LastName = "User",
                 PhoneNumberConfirmed = false,
                 EmailConfirmed = false,
-                SecurityStamp = Guid.NewGuid().ToString()
+                SecurityStamp = Guid.NewGuid().ToString(),
+                ImageId= Guid.Parse("7C8DCD23-143F-4145-AC5D-3D2172E8B876")
             };
             admin.PasswordHash = CreatePasswordHash(admin, "123456");
 
