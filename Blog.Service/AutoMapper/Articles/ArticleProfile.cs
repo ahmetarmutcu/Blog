@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Blog.Service.AutoMapper.Artices
+namespace Blog.Service.AutoMapper.Articles
 {
     public class ArticleProfile:Profile
     {
