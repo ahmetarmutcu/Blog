@@ -1,5 +1,7 @@
-﻿using Blog.Data.UnitOfWorks;
+﻿using AutoMapper;
+using Blog.Data.UnitOfWorks;
 using Blog.Entity.DTOs.Articles;
+using Blog.Entity.Entities;
 using Blog.Service.Services.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,11 +12,13 @@ namespace Blog.Web.Areas.Admin.Controllers
     {
         private readonly IArticleService articleService;
         private readonly ICategoryService categoryService;
+        private readonly IMapper mapper;
 
-        public ArticleController(IArticleService articleService,ICategoryService categoryService)
+        public ArticleController(IArticleService articleService,ICategoryService categoryService,IMapper mapper)
         {
             this.articleService = articleService;
             this.categoryService = categoryService;
+            this.mapper = mapper;
         }
         public async Task<IActionResult> Index()
         {
@@ -34,6 +38,25 @@ namespace Blog.Web.Areas.Admin.Controllers
             RedirectToAction("Index", "Article", new { Area = "Admin" });
             var categories = await categoryService.GetAllCategoriesNonDeleted();
             return View(new ArticleAddDto { Categories = categories });
+        }
+        [HttpGet]
+        public async Task<IActionResult> Update(Guid articleId) {
+
+            var article = await articleService.GetAllArticlesWithCategoryNonDeleteAsync(articleId);
+            var categories = await categoryService.GetAllCategoriesNonDeleted();
+
+            var articleUpdateDto = mapper.Map<ArticleUpdateDto>(article);
+            articleUpdateDto.Categories = categories;
+
+            return View(articleUpdateDto);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Update(ArticleUpdateDto articleUpdateDto)
+        {
+            await articleService.UpdateArticleAsync(articleUpdateDto);
+            var categories = await categoryService.GetAllCategoriesNonDeleted();
+            articleUpdateDto.Categories = categories;
+            return View(articleUpdateDto);
         }
     }
 }

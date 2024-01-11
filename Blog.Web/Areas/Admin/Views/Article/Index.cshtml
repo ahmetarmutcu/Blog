@@ -27,15 +27,20 @@
                     </tr>
                 </tfoot>
                 <tbody class="table-border-bottom-0">
-                    @foreach(var article in Model)
+                    @foreach (var article in Model)
                     {
                         <tr name='@article.Id'>
                             <th>@article.Title</th>
                             <th>@article.Category.Name</th>
                             <th>@article.CreatedDate.ToShortDateString()</th>
                             <th>@article.CreatedBy</th>
-                            <th>@(article.IsDeleted?"Aktif Değil":"Aktif")</th>
-                            <td>asd</td>
+                            <th>@(article.IsDeleted ? "Aktif Değil" : "Aktif")</th>
+                            <td>
+                                <a class="btn btn-primary btn-sm" data-id="@article.Id" asp-area="Admin" asp-controller="Article" asp-action="Update" asp-route-articleId="@article.Id">
+                                    <i class="bx bxs-edit"></i>
+
+                                </a>
+                            </td>
                         </tr>
                     }
                 </tbody>
@@ -43,6 +48,6 @@
         </div>
     </div>
 </div>
-@section Scripts{
+@section Scripts {
     <script src="~/js/articleIndex.js" type="application/ecmascript"></script>
 }
