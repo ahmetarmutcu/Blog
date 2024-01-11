@@ -32,7 +32,7 @@ namespace Blog.Data.Repositories.Concretes
 
             return await query.ToListAsync();
         }
-        public async Task TaskAsync(T entity)
+        public async Task AddAsync(T entity)
         {
             await Table.AddAsync(entity);
         }
