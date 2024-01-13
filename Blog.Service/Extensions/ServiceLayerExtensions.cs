@@ -1,5 +1,8 @@
-﻿using Blog.Service.Services.Abstractions;
+﻿using Blog.Service.FluentValidations;
+using Blog.Service.Services.Abstractions;
 using Blog.Service.Services.Concrete;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
@@ -12,7 +15,17 @@ namespace Blog.Service.Extensions
             var assembly=Assembly.GetExecutingAssembly();
             services.AddScoped<IArticleService,ArticleService>();
             services.AddScoped<ICategoryService, CategoryService>();
+            
             services.AddAutoMapper(assembly);
+
+
+            services.AddControllersWithViews().AddFluentValidation(opt =>
+            {
+                opt.RegisterValidatorsFromAssemblyContaining<ArticleValidator>();
+                opt.DisableDataAnnotationsValidation = true;
+                opt.ValidatorOptions.LanguageManager.Culture = new System.Globalization.CultureInfo("tr");
+            });
+
             return services;
         }
     }
