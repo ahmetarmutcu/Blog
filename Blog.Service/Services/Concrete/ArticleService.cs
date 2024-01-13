@@ -40,7 +40,7 @@ namespace Blog.Service.Services.Concrete
             var map = mapper.Map<ArticleDTO>(article);
             return map;
         }
-        public async Task UpdateArticleAsync(ArticleUpdateDto articleUpdateDto)
+        public async Task<string> UpdateArticleAsync(ArticleUpdateDto articleUpdateDto)
         {
             var article = await unitOfWork.GetRepository<Article>().GetAsync(x => !x.IsDeleted && x.Id == articleUpdateDto.Id, x => x.Category);
             article.Title = articleUpdateDto.Title;
@@ -48,14 +48,17 @@ namespace Blog.Service.Services.Concrete
             article.CategoryId = articleUpdateDto.CategoryId;
             await unitOfWork.GetRepository<Article>().UpdateAsync(article);
             await unitOfWork.SaveAsync();
+
+            return article.Title;
         }
-        public async Task SafeDeleteArticleAsync(Guid articleId)
+        public async Task<string> SafeDeleteArticleAsync(Guid articleId)
         {
             var article = await unitOfWork.GetRepository<Article>().GetByGuidAsync(articleId);
             article.IsDeleted = true;
             article.DeletedDate = DateTime.Now;
             await unitOfWork.GetRepository<Article>().UpdateAsync(article);
             await unitOfWork.SaveAsync();
+            return article.Title;
 
         }
     }
