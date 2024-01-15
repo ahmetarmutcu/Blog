@@ -1,4 +1,5 @@
 ﻿using Blog.Service.FluentValidations;
+using Blog.Service.Helpers.Images;
 using Blog.Service.Services.Abstractions;
 using Blog.Service.Services.Concrete;
 using FluentValidation;
@@ -16,8 +17,8 @@ namespace Blog.Service.Extensions
             var assembly=Assembly.GetExecutingAssembly();
             services.AddScoped<IArticleService,ArticleService>();
             services.AddScoped<ICategoryService, CategoryService>();
-            
-           services.AddSingleton<IHttpContextAccessor,HttpContextAccessor>();
+            services.AddScoped<IImageHelper, ImageHelper>();
+            services.AddSingleton<IHttpContextAccessor,HttpContextAccessor>();
 
             services.AddAutoMapper(assembly);
 
