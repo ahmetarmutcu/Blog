@@ -56,6 +56,24 @@ namespace Blog.Web.Areas.Admin.Controllers
             return View();
         }
 
+        [HttpPost]
+        public async Task<IActionResult> AddWithAjax([FromBody] CategoryAddDto categoryAddDto)
+        {
+            var map = mapper.Map<Category>(categoryAddDto);
+            var result = await validator.ValidateAsync(map);
+            if (result.IsValid)
+            {
+                await categoryService.CreateCategoryAsync(categoryAddDto);
+                toast.AddSuccessToastMessage(Messages.Category.Add(categoryAddDto.Name), new ToastrOptions { Title = "İşlem Başarılı" });
+                return Json(Messages.Category.Add(categoryAddDto.Name));
+            }
+            else
+            {
+                toast.AddErrorToastMessage(result.Errors.First().ErrorMessage, new ToastrOptions { Title = "İşlem Başarısız" });
+                return Json(result.Errors.First().ErrorMessage);
+            }
+        }
+
         [HttpGet]
         public async Task<IActionResult> Update(Guid categoryId)
         {
@@ -77,6 +95,7 @@ namespace Blog.Web.Areas.Admin.Controllers
             }
             return View(map);
         }
+
 
         public async Task<IActionResult> Delete(Guid categoryId)
         {
