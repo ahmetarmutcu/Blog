@@ -3,7 +3,7 @@ using Blog.Entity.Entities;
 
 namespace Blog.Entity.DTOs.Articles
 {
-    public class ArticleDTO
+    public class ArticleDto
     {
         public Guid Id { get; set; }
         public string Title { get; set; }

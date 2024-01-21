@@ -29,10 +29,10 @@ namespace Blog.Service.Services.Concrete
            
         }
 
-        public async Task<List<ArticleDTO>> GetAllArticlesWithCategoryNonDeleteAsync()
+        public async Task<List<ArticleDto>> GetAllArticlesWithCategoryNonDeleteAsync()
         {
             var articles=await unitOfWork.GetRepository<Article>().GetAllAsync(x=>!x.IsDeleted,x=>x.Category);
-            var map = mapper.Map<List<ArticleDTO>>(articles);
+            var map = mapper.Map<List<ArticleDto>>(articles);
             return map;
         }
 
@@ -51,10 +51,10 @@ namespace Blog.Service.Services.Concrete
             await unitOfWork.SaveAsync();
         }
 
-        public async Task<ArticleDTO> GetAllArticlesWithCategoryNonDeleteAsync(Guid articleId)
+        public async Task<ArticleDto> GetAllArticlesWithCategoryNonDeleteAsync(Guid articleId)
         {
             var article = await unitOfWork.GetRepository<Article>().GetAsync(x => !x.IsDeleted && x.Id==articleId, x => x.Category,x=>x.Image);
-            var map = mapper.Map<ArticleDTO>(article);
+            var map = mapper.Map<ArticleDto>(article);
             return map;
         }
         public async Task<string> UpdateArticleAsync(ArticleUpdateDto articleUpdateDto)
