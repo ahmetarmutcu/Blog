@@ -98,5 +98,33 @@ namespace Blog.Service.Services.Concrete
             return article.Title;
 
         }
+        /// <summary>
+        /// Silinen kullanıcıları getirme
+        /// </summary>
+        /// <returns></returns>
+        public async Task<List<ArticleDto>> GetAllArticlesithCategoryDeleteAsync()
+        {
+            var articles = await unitOfWork.GetRepository<Article>().GetAllAsync(x => x.IsDeleted, x => x.Category);
+            var map = mapper.Map<List<ArticleDto>>(articles);
+            return map;
+        }
+        /// <summary>
+        /// Silinenen geri alma
+        /// </summary>
+        /// <param name="articleId"></param>
+        /// <returns></returns>
+        public async Task<string> UndoDeleteArticleAsync(Guid articleId)
+        {
+            var userEmail = _user.GetLoggedInEmail();
+            var article = await unitOfWork.GetRepository<Article>().GetByGuidAsync(articleId);
+
+            article.IsDeleted = false;
+            article.DeletedDate = null;
+            article.DeleteBy = null;
+
+            await unitOfWork.GetRepository<Article>().UpdateAsync(article);
+            await unitOfWork.SaveAsync();
+            return article.Title;
+        }
     }
 }

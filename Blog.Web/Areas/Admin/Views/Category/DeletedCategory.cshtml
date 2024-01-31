@@ -1,0 +1,44 @@
+﻿@model List<CategoryDto>
+
+<div class="container-xxl flex-grow-1 container-p-y">
+    <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Çöp Kutusu /</span> Kategoriler</h4>
+    <div class="card">
+        <div class="table-responsive text-nowrap m-5">
+            <table class="table table-bordered" id="categoriesTables" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>İsim</th>
+                        <th>Oluşturulma Tarihi</th>
+                        <th>Oluşturan</th>
+                        <th>Durum</th>
+                        <th>İşlemler</th>
+                    </tr>
+                </thead>
+                <tbody class="table-border-bottom-0">
+                    @foreach (var category in Model)
+                    {
+                        <tr name='@category.Id'>
+                            <th>@category.Name</th>
+                            <th>@category.CreatedDate.ToShortDateString()</th>
+                            <th>@category.CreatedBy</th>
+                            <th>@(category.IsDeleted ? "Aktif Değil" : "Aktif")</th>
+                            <td>
+                                <a class="btn btn-warning btn-sm" data-id="@category.Id" asp-area="Admin" asp-controller="Category" asp-action="UndoDelete" asp-route-categoryId="@category.Id">
+                                    <i class="bx bx-undo"></i>
+
+                                </a>
+                              @*   <a class="btn btn-danger btn-sm" data-id="@category.Id" asp-area="Admin" asp-controller="Category" asp-action="Delete" asp-route-categoryId="@category.Id">
+                                    <i class="bx bxs-minus-circle"></i>
+
+                                </a> *@
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script src="~/js/articleIndex.js" type="application/ecmascript"></script>
+}
